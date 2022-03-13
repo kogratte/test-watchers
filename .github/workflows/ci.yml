@@ -1,4 +1,4 @@
-name: Node.js CI
+name: CI
 on:
   push:
     branches: [ main ]
@@ -15,11 +15,9 @@ jobs:
         run: |
           yarn install
           yarn test:unit:ci
-      - name: Test Report
-        uses: dorny/test-reporter@v1
+      - uses: actions/upload-artifact@v2  # upload test results
+        if: success() || failure()        # run this step even if previous step failed
         with:
-          name: Unit tests
-          path: reports/unit_tests.xml 
-          reporter: jest-junit
- 
-     
+          name: test-results
+          path: reports/unit_tests.xml
+      
