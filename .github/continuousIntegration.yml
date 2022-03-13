@@ -1,0 +1,25 @@
+name: Node.js CI
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest  
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install and tests
+        run: |
+          yarn install
+          yarn test:unit:ci
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        with:
+          name: Unit tests
+          path: reports/unit_tests.xml 
+          reporter: jest-junit
+ 
+     
