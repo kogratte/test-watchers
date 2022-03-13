@@ -54,7 +54,7 @@ describe('HelloWorld.vue', () => {
     expect(wrapper.get('[data-testid="stars-count"]').text()).not.toBe('1 stars')
   })
 
-  test('should keep stars count updated using hotUpdate techniques.', async () => {
+  test('should keep stars count updated using hotUpdate techniques.', () => {
     const wrapper = shallowMount(HelloWorld, {
       localVue,
       store
@@ -63,8 +63,6 @@ describe('HelloWorld.vue', () => {
     fakeStarsModule.getters.starsCount.mockReturnValue(1)
 
     rebuildStore()
-
-    await wrapper.vm.$nextTick()
 
     expect(wrapper.get('[data-testid="stars-count"]').text()).toBe('1 stars')
   })
