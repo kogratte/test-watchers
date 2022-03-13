@@ -6,10 +6,17 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+import { StoreModule } from '@/decorators/storeModule'
+import StarsModule from '@/store/modules/stars.module'
 
 @Component
 export default class HelloWorld extends Vue {
-  public starsCount = 0;
+  @StoreModule(StarsModule)
+  public readonly starsModule!: StarsModule;
+
+  public get starsCount (): number {
+    return this.starsModule.starsCount
+  }
 }
 </script>
 
