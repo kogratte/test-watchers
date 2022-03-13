@@ -41,5 +41,9 @@
     "ts-jest": "^27.0.4",
     "typescript": "~4.5.5",
     "vue-template-compiler": "^2.6.14"
+  },
+  "jest-junit": {
+    "outputDirectory": "./reports/",
+    "outputName": "unit_tests.xml"
   }
 }
