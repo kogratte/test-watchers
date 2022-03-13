@@ -16,12 +16,20 @@ describe('HelloWorld.vue', () => {
     namespaced: true
   }
 
-  beforeEach(() => {
-    store = new Vuex.Store({
+  function buildStore () {
+    return {
       modules: {
         [getModuleName(StarsModule)]: fakeStarsModule
       }
-    })
+    }
+  }
+
+  function rebuildStore () {
+    store.hotUpdate(buildStore())
+  }
+
+  beforeEach(() => {
+    store = new Vuex.Store(buildStore())
   })
 
   test('should display stars count, with a default value 0', () => {
@@ -33,7 +41,7 @@ describe('HelloWorld.vue', () => {
     expect(wrapper.get('[data-testid="stars-count"]').text()).toBe('0 stars')
   })
 
-  test('should keep stars count updated', async () => {
+  test('should not update stars count just updating the mocked getter', async () => {
     const wrapper = shallowMount(HelloWorld, {
       localVue,
       store
@@ -41,11 +49,20 @@ describe('HelloWorld.vue', () => {
 
     fakeStarsModule.getters.starsCount.mockReturnValue(1)
 
-    store.hotUpdate({
-      modules: {
-        [getModuleName(StarsModule)]: fakeStarsModule
-      }
+    await wrapper.vm.$nextTick()
+
+    expect(wrapper.get('[data-testid="stars-count"]').text()).not.toBe('1 stars')
+  })
+
+  test('should keep stars count updated using hotUpdate techniques.', async () => {
+    const wrapper = shallowMount(HelloWorld, {
+      localVue,
+      store
     })
+
+    fakeStarsModule.getters.starsCount.mockReturnValue(1)
+
+    rebuildStore()
 
     await wrapper.vm.$nextTick()
 
