@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue, Watch } from 'vue-property-decorator'
 import { StoreModule } from '@/decorators/storeModule'
 import StarsModule from '@/store/modules/stars.module'
 
@@ -16,6 +16,11 @@ export default class HelloWorld extends Vue {
 
   public get starsCount (): number {
     return this.starsModule.starsCount
+  }
+
+  @Watch('starsCount', { immediate: true })
+  private onCountUpdated (val: number) {
+    console.log(`Stars count has been updated: ${val}`)
   }
 }
 </script>
